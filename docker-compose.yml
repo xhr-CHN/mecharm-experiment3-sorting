@@ -1,0 +1,29 @@
+name: mecharm-exp3
+
+services:
+  moveit:
+    image: mecharm-exp3-ros2:humble
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    command: ["sleep", "infinity"]
+    environment:
+      ROS_DOMAIN_ID: "0"
+      RMW_IMPLEMENTATION: rmw_fastrtps_cpp
+      ROS_LOCALHOST_ONLY: "1"
+    network_mode: host
+    volumes:
+      - type: bind
+        source: .
+        target: /workspace/mecharm_exp3
+      - mecharm_exp3_build:/opt/mecharm_ws/build
+      - mecharm_exp3_install:/opt/mecharm_ws/install
+      - mecharm_exp3_log:/opt/mecharm_ws/log
+    working_dir: /workspace/mecharm_exp3
+    init: true
+    restart: unless-stopped
+
+volumes:
+  mecharm_exp3_build:
+  mecharm_exp3_install:
+  mecharm_exp3_log:

@@ -1,0 +1,47 @@
+mecharm_pick_place:
+  ros__parameters:
+    frame_id: base
+    home_joint_names:
+      - joint1_to_base
+      - joint2_to_joint1
+      - joint3_to_joint2
+      - joint4_to_joint3
+      - joint5_to_joint4
+      - joint6_to_joint5
+    home_joint_positions: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    pick_position: [0.18, 0.08, 0.12]
+    place_position: [0.18, -0.08, 0.12]
+    safe_height: 0.18
+    tool_orientation_xyzw: [0.0, 1.0, 0.0, 0.0]
+    gripper_open: 1.0
+    gripper_closed: 0.0
+    motion_timeout_sec: 8.0
+    gripper_timeout_sec: 3.0
+    inter_attempt_delay_sec: 2.0
+    attempts_per_batch: 5
+    minimum_successes: 4
+
+isaac_mecharm_bridge:
+  ros__parameters:
+    robot_prim_path: /World/mecharm_270_pi
+    object_prim_path: /World/target_object
+    end_effector_frame: gripper_base
+    position_tolerance: 0.008
+    joint_tolerance: 0.02
+    publish_rate_hz: 20.0
+    attach_distance: 0.06
+
+isaac_trajectory_controller:
+  ros__parameters:
+    publish_rate_hz: 120.0
+    joint_tolerance: 0.02
+    feedback_stale_timeout_sec: 0.5
+    goal_time_tolerance_sec: 1.0
+    gripper_open_position: 0.15
+    gripper_closed_position: -0.75
+
+isaac_tcp_bridge:
+  ros__parameters:
+    host: 127.0.0.1
+    port: 8765
+    publish_rate_hz: 120.0

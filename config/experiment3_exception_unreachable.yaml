@@ -1,0 +1,18 @@
+sorting_task:
+  ros__parameters:
+    grid_centers:
+      G1: [0.8000, 0.0000, 0.0250]
+    grid_regions:
+      G1: [364, 50, 484, 150]
+    class_bins:
+      tennis_ball: [-0.1838, 0.0707, 0.0250]
+    max_reach_radius: 0.38
+
+sim_object_detector:
+  ros__parameters:
+    image_topic: /camera/image_raw
+    detection_topic: /mecharm/detections
+    confidence_threshold: 0.50
+    scenario: unreachable
+    object_records_json: >-
+      [{"object_id":"far_ball","class_id":"tennis_ball","confidence":0.95,"center_x":424.0,"center_y":100.0,"width":46.0,"height":46.0}]
