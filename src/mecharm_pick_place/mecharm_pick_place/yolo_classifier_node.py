@@ -40,6 +40,63 @@ def best_yolo_detection(result, class_names: Mapping, confidence_threshold: floa
     return best
 
 
+def majority_class(votes: Sequence[dict | None], minimum_votes: int) -> dict | None:
+    """Return a unique class winner from frame-level fixed-ROI decisions."""
+    if minimum_votes <= 0:
+        raise ValueError("minimum_votes must be positive")
+    valid_votes = [vote for vote in votes if vote is not None]
+    if not valid_votes:
+        return None
+    counts: dict[str, int] = {}
+    for vote in valid_votes:
+        class_id = str(vote["class_id"])
+        counts[class_id] = counts.get(class_id, 0) + 1
+    highest = max(counts.values())
+    winners = [class_id for class_id, count in counts.items() if count == highest]
+    if highest < minimum_votes or len(winners) != 1:
+        return None
+    class_id = winners[0]
+    confidences = [
+        float(vote["confidence"])
+        for vote in valid_votes
+        if str(vote["class_id"]) == class_id
+    ]
+    return {
+        "class_id": class_id,
+        "confidence": sum(confidences) / len(confidences),
+        "vote_count": highest,
+        "frame_results": list(votes),
+    }
+
+
+def classify_grid_frames(
+    model,
+    frames: Sequence,
+    region: Sequence[float],
+    confidence_threshold: float,
+    image_size: int,
+    device: str,
+    minimum_votes: int = 4,
+) -> dict | None:
+    """Classify one fixed ROI across buffered frames and vote on its class."""
+    frame_results = []
+    for frame in frames:
+        crop, _, _ = crop_fixed_roi(frame, region)
+        result = model.predict(
+            source=crop,
+            conf=confidence_threshold,
+            imgsz=image_size,
+            device=device,
+            verbose=False,
+        )[0]
+        best = best_yolo_detection(result, result.names, confidence_threshold)
+        frame_results.append(best)
+    voted = majority_class(frame_results, minimum_votes)
+    if voted is None:
+        return None
+    return voted
+
+
 def main(args=None) -> None:
     import json
     from pathlib import Path
