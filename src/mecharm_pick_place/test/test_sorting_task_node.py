@@ -1,6 +1,10 @@
 from types import SimpleNamespace
 
-from mecharm_pick_place.sorting_task_node import SortingControllerCore, _record_from_message
+from mecharm_pick_place.sorting_task_node import (
+    SortingControllerCore,
+    _record_from_message,
+    batch_classes_by_grid,
+)
 from mecharm_pick_place.sorting_types import DetectionRecord
 
 
@@ -97,3 +101,19 @@ def test_zero_sized_yolo_detection_is_ignored_instead_of_crashing():
         ),
     )
     assert _record_from_message(message) is None
+
+
+def test_batch_classes_by_grid_indexes_a_complete_locked_batch():
+    records = [
+        detection("G1", "tennis_ball", 0, 0, 0.9),
+        detection("G2", "pencil", 0, 0, 0.8),
+    ]
+
+    assert batch_classes_by_grid(records, ("G1", "G2")) == {
+        "G1": ("tennis_ball", 0.9),
+        "G2": ("pencil", 0.8),
+    }
+
+
+def test_batch_classes_by_grid_rejects_incomplete_batch():
+    assert batch_classes_by_grid([detection("G1", "tennis_ball", 0, 0)], ("G1", "G2")) is None

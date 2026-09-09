@@ -182,6 +182,21 @@ def _record_from_message(message) -> DetectionRecord | None:
         return None
 
 
+def batch_classes_by_grid(
+    records: Iterable[DetectionRecord], grid_order: Iterable[str]
+) -> dict[str, tuple[str, float]] | None:
+    """Index one complete batch of fixed-grid class decisions."""
+    expected = tuple(str(grid_id) for grid_id in grid_order)
+    indexed: dict[str, tuple[str, float]] = {}
+    for record in records:
+        grid_id = str(record.object_id)
+        if grid_id in expected and grid_id not in indexed:
+            indexed[grid_id] = (str(record.class_id), float(record.confidence))
+    if set(indexed) != set(expected):
+        return None
+    return {grid_id: indexed[grid_id] for grid_id in expected}
+
+
 def main(args=None) -> None:
     import rclpy
     import math
@@ -222,8 +237,8 @@ def main(args=None) -> None:
             )
             self._batch_initialized = False
             self._grid_index = 0
-            self._waiting_grid = None
-            self._vision_response = None
+            self._waiting_batch = False
+            self._classified_by_grid = None
             self._vision_deadline = 0.0
             self._feedback_deadline = 0.0
             self._command = None
@@ -251,8 +266,8 @@ def main(args=None) -> None:
             )
             self._batch_initialized = False
             self._grid_index = 0
-            self._waiting_grid = None
-            self._vision_response = None
+            self._waiting_batch = False
+            self._classified_by_grid = None
             self._feedback_deadline = 0.0
             self._returned_home = False
             self._publish_status("WAIT_DETECTIONS", True, "autonomous sorting started")
@@ -262,34 +277,42 @@ def main(args=None) -> None:
 
         def _stop(self, _request, response):
             self.active = False
-            self._waiting_grid = None
+            self._waiting_batch = False
             self._publish_status("SAFE_STOP", False, "operator requested stop")
             response.success = True
             response.message = "sorting stopped"
             return response
 
         def _on_detections(self, message: Detection2DArray) -> None:
-            if not self.active or self._waiting_grid is None:
+            if not self.active or not self._waiting_batch:
                 return
             records = []
             for item in message.detections:
                 record = _record_from_message(item)
-                if record is None or str(item.id) != self._waiting_grid:
-                    continue
-                records.append(record)
-            if not records:
+                if record is not None:
+                    records.append(record)
+            classified = batch_classes_by_grid(records, self.grid_order)
+            if classified is None:
+                self.get_logger().warning(
+                    f"YOLO BATCH incomplete: expected grids {self.grid_order}"
+                )
                 return
             self._write_jsonl(
                 self.detections_path,
                 {
                     "timestamp": time.time(),
-                    "grid_id": self._waiting_grid,
+                    "mode": "batch",
+                    "grid_ids": list(self.grid_order),
                     "count": len(records),
                     "detections": [asdict(record) for record in records],
                 },
             )
-
-            self._vision_response = (records[0].class_id, records[0].confidence)
+            self._classified_by_grid = classified
+            self._waiting_batch = False
+            self._publish_status(
+                "VISION_BATCH_READY", True,
+                f"locked classes for {len(self.grid_order)} fixed grids",
+            )
 
         def _batch_tick(self) -> None:
             if not self.active or self.running:
@@ -316,21 +339,35 @@ def main(args=None) -> None:
                 finally:
                     self.running = False
                 return
-            if self._waiting_grid is not None:
-                if self._vision_response is None:
+            if self._waiting_batch:
+                if self._classified_by_grid is None:
                     if now < self._vision_deadline:
                         return
-                    result = self.core.record_fixed_failure(
-                        self._waiting_grid, "VISION_TIMEOUT", "YOLO did not classify the requested fixed grid"
+                    self._publish_status(
+                        "SAFE_STOP", False,
+                        "YOLO batch classification timed out before all six grids were classified",
                     )
-                    self._publish_result(result)
-                    self._grid_index += 1
-                    self._waiting_grid = None
+                    self._waiting_batch = False
+                    self.active = False
                     return
-                grid_id = self._waiting_grid
-                class_id, confidence = self._vision_response
-                self._waiting_grid = None
-                self._vision_response = None
+                return
+            if self._classified_by_grid is not None and any(
+                class_id == "unknown"
+                for class_id, _confidence in self._classified_by_grid.values()
+            ):
+                for grid_id, (class_id, _confidence) in self._classified_by_grid.items():
+                    if class_id == "unknown":
+                        self._publish_result(
+                            self.core.record_fixed_failure(
+                                grid_id, "UNKNOWN_CLASS", "batch YOLO vote did not reach the minimum"
+                            )
+                        )
+                self._publish_status("SAFE_STOP", False, "YOLO batch contains unknown classes")
+                self.active = False
+                return
+            if self._classified_by_grid is not None and self._grid_index < len(self.grid_order):
+                grid_id = str(self.grid_order[self._grid_index])
+                class_id, confidence = self._classified_by_grid[grid_id]
                 target = self.core.target_for_fixed_grid(
                     grid_id,
                     class_id,
@@ -371,11 +408,14 @@ def main(args=None) -> None:
                 self._publish_status("DONE", True, "fixed grid sequence completed")
                 self.active = False
                 return
-            grid_id = str(self.grid_order[self._grid_index])
-            self._publish_status("VISION_REQUEST", True, f"classifying fixed grid {grid_id}")
-            self.vision_request_pub.publish(String(data=grid_id))
-            self._waiting_grid = grid_id
-            self._vision_deadline = now + self.vision_timeout
+            if self._classified_by_grid is None:
+                self._publish_status(
+                    "VISION_BATCH_REQUEST", True,
+                    f"classifying all fixed grids over {self.core.config.get('batch_frame_count', 6)} frames",
+                )
+                self._waiting_batch = True
+                self._vision_deadline = now + self.vision_timeout
+                self.vision_request_pub.publish(String(data="ALL"))
 
         def _execute_target(self, command, target: SortingTarget):
             import numpy as np

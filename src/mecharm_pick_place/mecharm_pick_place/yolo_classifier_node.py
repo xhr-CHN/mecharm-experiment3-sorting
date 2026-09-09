@@ -163,11 +163,15 @@ def main(args=None) -> None:
             self.grid_order = tuple(self.grid_regions)
             if self._configured_confidence is not None:
                 self.confidence_threshold = self._configured_confidence
+            if self._configured_batch_frame_count is not None:
+                self.batch_frame_count = self._configured_batch_frame_count
+            if self._configured_batch_minimum_votes is not None:
+                self.batch_minimum_votes = self._configured_batch_minimum_votes
+            self.frame_buffer = deque(maxlen=self.batch_frame_count)
             self.model = YOLO(self.model_path)
             self.bridge = CvBridge()
             self.latest_image = None
             self.latest_header = None
-            self.frame_buffer = deque(maxlen=self.batch_frame_count)
             self.image_sub = self.create_subscription(
                 Image,
                 str(self.get_parameter("image_topic").value),
@@ -189,6 +193,8 @@ def main(args=None) -> None:
 
         def _read_grid_regions(self) -> dict[str, tuple[float, ...]]:
             self._configured_confidence = None
+            self._configured_batch_frame_count = None
+            self._configured_batch_minimum_votes = None
             config_path = str(self.get_parameter("config_path").value)
             if not config_path:
                 return {}
@@ -200,6 +206,10 @@ def main(args=None) -> None:
             yolo_parameters = document.get("yolo_classifier", {}).get("ros__parameters", {})
             if "confidence_threshold" in yolo_parameters:
                 self._configured_confidence = float(yolo_parameters["confidence_threshold"])
+            if "batch_frame_count" in yolo_parameters:
+                self._configured_batch_frame_count = int(yolo_parameters["batch_frame_count"])
+            if "batch_minimum_votes" in yolo_parameters:
+                self._configured_batch_minimum_votes = int(yolo_parameters["batch_minimum_votes"])
             return {
                 str(grid_id): tuple(float(value) for value in region)
                 for grid_id, region in parameters.get("grid_regions", {}).items()

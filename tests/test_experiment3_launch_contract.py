@@ -86,3 +86,19 @@ def test_sorting_motion_keeps_joint_feedback_running_during_motion():
     assert "MultiThreadedExecutor" in task
     assert "external_executor_spins" in probe
     assert "self.external_executor_spins = True" in task
+
+
+def test_sorting_uses_one_batch_vision_request_before_fixed_grid_motion():
+    source = (
+        ROOT / "src" / "mecharm_pick_place" / "mecharm_pick_place" / "sorting_task_node.py"
+    ).read_text(encoding="utf-8")
+    yolo = (
+        ROOT / "src" / "mecharm_pick_place" / "mecharm_pick_place" / "yolo_classifier_node.py"
+    ).read_text(encoding="utf-8")
+    config = (ROOT / "config" / "experiment3_sorting.yaml").read_text(encoding="utf-8")
+    assert 'String(data="ALL")' in source
+    assert "_waiting_batch" in source
+    assert "batch_classes_by_grid" in source
+    assert 'grid_id.upper() == "ALL"' in yolo
+    assert "batch_frame_count: 6" in config
+    assert "batch_minimum_votes: 4" in config
