@@ -22,6 +22,14 @@ def test_configuration_has_six_ring_cells_and_two_classes():
     assert {item["class_id"] for item in config["objects"]} == {"tennis_ball", "pencil"}
 
 
+def test_g6_is_the_fourth_tennis_ball():
+    config = load_config()
+    g6 = next(item for item in config["objects"] if item["grid_id"] == "G6")
+    assert g6["object_id"] == "tennis_04"
+    assert g6["class_id"] == "tennis_ball"
+    assert g6["bbox"][2:] == [40, 40]
+
+
 def test_ring_coordinates_are_inside_table_and_have_nonzero_radius():
     config = load_config()
     assert config["ring_center"] == [0.0, 0.0]
