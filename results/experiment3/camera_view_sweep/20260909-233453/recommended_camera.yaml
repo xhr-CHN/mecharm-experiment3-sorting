@@ -1,0 +1,23 @@
+view_id: tilt10_north
+position:
+- 1.1876604989036633e-17
+- 0.1939596787793115
+- 1.1
+look_at:
+- 0.0
+- 0.0
+- 0.0
+tilt_deg: 10.0
+azimuth_deg: 90.0
+focal_length_mm: 18.0
+resolution:
+- 848
+- 480
+metrics:
+  min_correct: 6
+  mean_correct: 6
+  correct_std: 0.0
+  mean_pencil_recall: 1.0
+  mean_tennis_recall: 1.0
+  mean_confidence: 0.8362208644549052
+  mean_wrong: 0

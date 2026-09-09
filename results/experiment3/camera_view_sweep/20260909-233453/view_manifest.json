@@ -1,0 +1,474 @@
+{
+  "scene": "E:\\\u673a\u5668\u4eba\u96c6\u6210\u5c0f\u7ec4\u9879\u76ee\\\u5b9e\u9a8c\u4e09\\simulation\\scenes\\mecharm_pick_place.usd",
+  "resolution": [
+    848,
+    480
+  ],
+  "focal_length_mm": 18.0,
+  "horizontal_aperture_mm": 20.955,
+  "look_at": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "frames_per_view": 5,
+  "views": [
+    {
+      "view_id": "vertical",
+      "tilt_deg": 0.0,
+      "azimuth_deg": 0.0,
+      "position": [
+        0.0,
+        0.0,
+        1.1
+      ]
+    },
+    {
+      "view_id": "tilt10_east",
+      "tilt_deg": 10.0,
+      "azimuth_deg": 0.0,
+      "position": [
+        0.1939596787793115,
+        0.0,
+        1.1
+      ]
+    },
+    {
+      "view_id": "tilt10_north",
+      "tilt_deg": 10.0,
+      "azimuth_deg": 90.0,
+      "position": [
+        1.1876604989036633e-17,
+        0.1939596787793115,
+        1.1
+      ]
+    },
+    {
+      "view_id": "tilt10_west",
+      "tilt_deg": 10.0,
+      "azimuth_deg": 180.0,
+      "position": [
+        -0.1939596787793115,
+        2.3753209978073265e-17,
+        1.1
+      ]
+    },
+    {
+      "view_id": "tilt10_south",
+      "tilt_deg": 10.0,
+      "azimuth_deg": 270.0,
+      "position": [
+        -3.5629814967109895e-17,
+        -0.1939596787793115,
+        1.1
+      ]
+    },
+    {
+      "view_id": "tilt15_east",
+      "tilt_deg": 15.0,
+      "azimuth_deg": 0.0,
+      "position": [
+        0.294744111674235,
+        0.0,
+        1.1
+      ]
+    },
+    {
+      "view_id": "tilt15_north",
+      "tilt_deg": 15.0,
+      "azimuth_deg": 90.0,
+      "position": [
+        1.8047871646469094e-17,
+        0.294744111674235,
+        1.1
+      ]
+    },
+    {
+      "view_id": "tilt15_west",
+      "tilt_deg": 15.0,
+      "azimuth_deg": 180.0,
+      "position": [
+        -0.294744111674235,
+        3.609574329293819e-17,
+        1.1
+      ]
+    },
+    {
+      "view_id": "tilt15_south",
+      "tilt_deg": 15.0,
+      "azimuth_deg": 270.0,
+      "position": [
+        -5.414361493940728e-17,
+        -0.294744111674235,
+        1.1
+      ]
+    },
+    {
+      "view_id": "tilt20_east",
+      "tilt_deg": 20.0,
+      "azimuth_deg": 0.0,
+      "position": [
+        0.4003672576928226,
+        0.0,
+        1.1
+      ]
+    },
+    {
+      "view_id": "tilt20_north",
+      "tilt_deg": 20.0,
+      "azimuth_deg": 90.0,
+      "position": [
+        2.4515424030845936e-17,
+        0.4003672576928226,
+        1.1
+      ]
+    },
+    {
+      "view_id": "tilt20_west",
+      "tilt_deg": 20.0,
+      "azimuth_deg": 180.0,
+      "position": [
+        -0.4003672576928226,
+        4.903084806169187e-17,
+        1.1
+      ]
+    },
+    {
+      "view_id": "tilt20_south",
+      "tilt_deg": 20.0,
+      "azimuth_deg": 270.0,
+      "position": [
+        -7.35462720925378e-17,
+        -0.4003672576928226,
+        1.1
+      ]
+    }
+  ],
+  "frames": [
+    {
+      "view_id": "vertical",
+      "frame_index": 1,
+      "path": "frames/vertical/frame_01.png"
+    },
+    {
+      "view_id": "vertical",
+      "frame_index": 2,
+      "path": "frames/vertical/frame_02.png"
+    },
+    {
+      "view_id": "vertical",
+      "frame_index": 3,
+      "path": "frames/vertical/frame_03.png"
+    },
+    {
+      "view_id": "vertical",
+      "frame_index": 4,
+      "path": "frames/vertical/frame_04.png"
+    },
+    {
+      "view_id": "vertical",
+      "frame_index": 5,
+      "path": "frames/vertical/frame_05.png"
+    },
+    {
+      "view_id": "tilt10_east",
+      "frame_index": 1,
+      "path": "frames/tilt10_east/frame_01.png"
+    },
+    {
+      "view_id": "tilt10_east",
+      "frame_index": 2,
+      "path": "frames/tilt10_east/frame_02.png"
+    },
+    {
+      "view_id": "tilt10_east",
+      "frame_index": 3,
+      "path": "frames/tilt10_east/frame_03.png"
+    },
+    {
+      "view_id": "tilt10_east",
+      "frame_index": 4,
+      "path": "frames/tilt10_east/frame_04.png"
+    },
+    {
+      "view_id": "tilt10_east",
+      "frame_index": 5,
+      "path": "frames/tilt10_east/frame_05.png"
+    },
+    {
+      "view_id": "tilt10_north",
+      "frame_index": 1,
+      "path": "frames/tilt10_north/frame_01.png"
+    },
+    {
+      "view_id": "tilt10_north",
+      "frame_index": 2,
+      "path": "frames/tilt10_north/frame_02.png"
+    },
+    {
+      "view_id": "tilt10_north",
+      "frame_index": 3,
+      "path": "frames/tilt10_north/frame_03.png"
+    },
+    {
+      "view_id": "tilt10_north",
+      "frame_index": 4,
+      "path": "frames/tilt10_north/frame_04.png"
+    },
+    {
+      "view_id": "tilt10_north",
+      "frame_index": 5,
+      "path": "frames/tilt10_north/frame_05.png"
+    },
+    {
+      "view_id": "tilt10_west",
+      "frame_index": 1,
+      "path": "frames/tilt10_west/frame_01.png"
+    },
+    {
+      "view_id": "tilt10_west",
+      "frame_index": 2,
+      "path": "frames/tilt10_west/frame_02.png"
+    },
+    {
+      "view_id": "tilt10_west",
+      "frame_index": 3,
+      "path": "frames/tilt10_west/frame_03.png"
+    },
+    {
+      "view_id": "tilt10_west",
+      "frame_index": 4,
+      "path": "frames/tilt10_west/frame_04.png"
+    },
+    {
+      "view_id": "tilt10_west",
+      "frame_index": 5,
+      "path": "frames/tilt10_west/frame_05.png"
+    },
+    {
+      "view_id": "tilt10_south",
+      "frame_index": 1,
+      "path": "frames/tilt10_south/frame_01.png"
+    },
+    {
+      "view_id": "tilt10_south",
+      "frame_index": 2,
+      "path": "frames/tilt10_south/frame_02.png"
+    },
+    {
+      "view_id": "tilt10_south",
+      "frame_index": 3,
+      "path": "frames/tilt10_south/frame_03.png"
+    },
+    {
+      "view_id": "tilt10_south",
+      "frame_index": 4,
+      "path": "frames/tilt10_south/frame_04.png"
+    },
+    {
+      "view_id": "tilt10_south",
+      "frame_index": 5,
+      "path": "frames/tilt10_south/frame_05.png"
+    },
+    {
+      "view_id": "tilt15_east",
+      "frame_index": 1,
+      "path": "frames/tilt15_east/frame_01.png"
+    },
+    {
+      "view_id": "tilt15_east",
+      "frame_index": 2,
+      "path": "frames/tilt15_east/frame_02.png"
+    },
+    {
+      "view_id": "tilt15_east",
+      "frame_index": 3,
+      "path": "frames/tilt15_east/frame_03.png"
+    },
+    {
+      "view_id": "tilt15_east",
+      "frame_index": 4,
+      "path": "frames/tilt15_east/frame_04.png"
+    },
+    {
+      "view_id": "tilt15_east",
+      "frame_index": 5,
+      "path": "frames/tilt15_east/frame_05.png"
+    },
+    {
+      "view_id": "tilt15_north",
+      "frame_index": 1,
+      "path": "frames/tilt15_north/frame_01.png"
+    },
+    {
+      "view_id": "tilt15_north",
+      "frame_index": 2,
+      "path": "frames/tilt15_north/frame_02.png"
+    },
+    {
+      "view_id": "tilt15_north",
+      "frame_index": 3,
+      "path": "frames/tilt15_north/frame_03.png"
+    },
+    {
+      "view_id": "tilt15_north",
+      "frame_index": 4,
+      "path": "frames/tilt15_north/frame_04.png"
+    },
+    {
+      "view_id": "tilt15_north",
+      "frame_index": 5,
+      "path": "frames/tilt15_north/frame_05.png"
+    },
+    {
+      "view_id": "tilt15_west",
+      "frame_index": 1,
+      "path": "frames/tilt15_west/frame_01.png"
+    },
+    {
+      "view_id": "tilt15_west",
+      "frame_index": 2,
+      "path": "frames/tilt15_west/frame_02.png"
+    },
+    {
+      "view_id": "tilt15_west",
+      "frame_index": 3,
+      "path": "frames/tilt15_west/frame_03.png"
+    },
+    {
+      "view_id": "tilt15_west",
+      "frame_index": 4,
+      "path": "frames/tilt15_west/frame_04.png"
+    },
+    {
+      "view_id": "tilt15_west",
+      "frame_index": 5,
+      "path": "frames/tilt15_west/frame_05.png"
+    },
+    {
+      "view_id": "tilt15_south",
+      "frame_index": 1,
+      "path": "frames/tilt15_south/frame_01.png"
+    },
+    {
+      "view_id": "tilt15_south",
+      "frame_index": 2,
+      "path": "frames/tilt15_south/frame_02.png"
+    },
+    {
+      "view_id": "tilt15_south",
+      "frame_index": 3,
+      "path": "frames/tilt15_south/frame_03.png"
+    },
+    {
+      "view_id": "tilt15_south",
+      "frame_index": 4,
+      "path": "frames/tilt15_south/frame_04.png"
+    },
+    {
+      "view_id": "tilt15_south",
+      "frame_index": 5,
+      "path": "frames/tilt15_south/frame_05.png"
+    },
+    {
+      "view_id": "tilt20_east",
+      "frame_index": 1,
+      "path": "frames/tilt20_east/frame_01.png"
+    },
+    {
+      "view_id": "tilt20_east",
+      "frame_index": 2,
+      "path": "frames/tilt20_east/frame_02.png"
+    },
+    {
+      "view_id": "tilt20_east",
+      "frame_index": 3,
+      "path": "frames/tilt20_east/frame_03.png"
+    },
+    {
+      "view_id": "tilt20_east",
+      "frame_index": 4,
+      "path": "frames/tilt20_east/frame_04.png"
+    },
+    {
+      "view_id": "tilt20_east",
+      "frame_index": 5,
+      "path": "frames/tilt20_east/frame_05.png"
+    },
+    {
+      "view_id": "tilt20_north",
+      "frame_index": 1,
+      "path": "frames/tilt20_north/frame_01.png"
+    },
+    {
+      "view_id": "tilt20_north",
+      "frame_index": 2,
+      "path": "frames/tilt20_north/frame_02.png"
+    },
+    {
+      "view_id": "tilt20_north",
+      "frame_index": 3,
+      "path": "frames/tilt20_north/frame_03.png"
+    },
+    {
+      "view_id": "tilt20_north",
+      "frame_index": 4,
+      "path": "frames/tilt20_north/frame_04.png"
+    },
+    {
+      "view_id": "tilt20_north",
+      "frame_index": 5,
+      "path": "frames/tilt20_north/frame_05.png"
+    },
+    {
+      "view_id": "tilt20_west",
+      "frame_index": 1,
+      "path": "frames/tilt20_west/frame_01.png"
+    },
+    {
+      "view_id": "tilt20_west",
+      "frame_index": 2,
+      "path": "frames/tilt20_west/frame_02.png"
+    },
+    {
+      "view_id": "tilt20_west",
+      "frame_index": 3,
+      "path": "frames/tilt20_west/frame_03.png"
+    },
+    {
+      "view_id": "tilt20_west",
+      "frame_index": 4,
+      "path": "frames/tilt20_west/frame_04.png"
+    },
+    {
+      "view_id": "tilt20_west",
+      "frame_index": 5,
+      "path": "frames/tilt20_west/frame_05.png"
+    },
+    {
+      "view_id": "tilt20_south",
+      "frame_index": 1,
+      "path": "frames/tilt20_south/frame_01.png"
+    },
+    {
+      "view_id": "tilt20_south",
+      "frame_index": 2,
+      "path": "frames/tilt20_south/frame_02.png"
+    },
+    {
+      "view_id": "tilt20_south",
+      "frame_index": 3,
+      "path": "frames/tilt20_south/frame_03.png"
+    },
+    {
+      "view_id": "tilt20_south",
+      "frame_index": 4,
+      "path": "frames/tilt20_south/frame_04.png"
+    },
+    {
+      "view_id": "tilt20_south",
+      "frame_index": 5,
+      "path": "frames/tilt20_south/frame_05.png"
+    }
+  ]
+}
