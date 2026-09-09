@@ -30,9 +30,9 @@ Set-Location 'E:\机器人集成小组项目\实验三'
 docker compose exec moveit bash -lc "source /opt/ros/humble/setup.bash && colcon --log-base /opt/mecharm_ws/log build --base-paths /workspace/mecharm_exp3/simulation/urdf/mycobot_description /workspace/mecharm_exp3/src --build-base /opt/mecharm_ws/build --install-base /opt/mecharm_ws/install --symlink-install && source /opt/mecharm_ws/install/setup.bash && ros2 launch mecharm_pick_place experiment3_sorting.launch.py project_root:=/workspace/mecharm_exp3 config:=/workspace/mecharm_exp3/config/experiment3_sorting.yaml start_isaac:=false"
 ```
 
-Isaac 会在 TCP `8766` 提供 `/World/experiment3/top_camera` 的真实渲染图像；ROS 节点 `virtual_camera_node` 将其发布为 `/camera/image_raw`。`yolo_classifier_node` 使用实验一模型，只对当前请求格位的固定 ROI 判断 `tennis_ball` 或 `pencil`。
+Isaac 会在 TCP `8766` 提供 `/World/experiment3/top_camera` 的真实渲染图像；ROS 节点 `virtual_camera_node` 将其发布为 `/camera/image_raw`。`yolo_classifier_node` 使用实验一模型，启动后缓存连续 6 帧，对 G1–G6 的固定 ROI 分别分类，并要求至少 4/6 帧投票一致；分类结果锁存后，抓取阶段不再重复请求视觉。
 
-控制器按 `G1` 到 `G6` 顺序请求识别。YOLO 返回的边界框只用于检测记录和可视化，抓取位置始终取自 `config/experiment3_sorting.yaml` 的 `grid_centers`，不会使用 YOLO 框中心。
+控制器启动阶段只发送一次 `ALL` 批量视觉请求，收到六个格位的类别结果后按 `G1` 到 `G6` 顺序执行抓取。YOLO 返回的边界框只用于检测记录和可视化，抓取位置始终取自 `config/experiment3_sorting.yaml` 的 `grid_centers`，不会使用 YOLO 框中心。
 
 动作流程沿用实验二的分级速度策略和五次平滑曲线；实验三当前将普通移动设为 `20°/s`，抓取、抬升和末段动作设为 `3°/s`。夹住物体后抬至 `z=0.133 m`，移动到分类框上方直接松爪自然落下；每批任务只在开始时回 HOME，目标之间不回 HOME，全部完成后最终回 HOME。
 

@@ -23,11 +23,11 @@ Isaac TCP joint bridge listening on 0.0.0.0:8765
 Isaac camera stream listening on 0.0.0.0:8766
 ```
 
-ROS 端 `virtual_camera_node` 把 8766 的真实渲染 JPEG 发布为 `/camera/image_raw`；`yolo_classifier_node` 加载 `models/pencil_tennis_yolo26n_best.pt`，通过 `/mecharm/vision_request` 接收当前固定格位。
+ROS 端 `virtual_camera_node` 把 8766 的真实渲染 JPEG 发布为 `/camera/image_raw`；`yolo_classifier_node` 加载 `models/pencil_tennis_yolo26n_best.pt`。任务节点启动后只通过 `/mecharm/vision_request` 发送一次 `ALL`，YOLO 使用 6 帧和 4/6 多数投票标定 G1–G6，发布一个包含六个固定格位结果的 `/mecharm/detections` 消息；批量识别等待上限为 60 秒。
 
 ## 验收标准
 
-应存在 `/camera/image_raw`、`/mecharm/detections`、`/mecharm/sorting_status` 和 `/mecharm/sorting_result`。正常场景应检测 6 个物体、至少完成 5 次正确放置并返回 HOME；异常配置应记录 `EMPTY_GRID`、`UNKNOWN_CLASS`、`UNREACHABLE` 或 `SAFE_STOP`。
+应存在 `/camera/image_raw`、`/mecharm/detections`、`/mecharm/sorting_status` 和 `/mecharm/sorting_result`。正常场景应先出现一次 `VISION_BATCH_REQUEST`、六个 `YOLO BATCH grid=...` 结果，随后按 G1–G6 完成抓取并返回 HOME；批量标定后不应再出现单格 `VISION_REQUEST`。异常配置应记录 `EMPTY_GRID`、`UNKNOWN_CLASS`、`UNREACHABLE` 或 `SAFE_STOP`。
 
 注意：YOLO 的框中心、框宽高不参与抓取定位。控制器只使用当前请求的固定格位编号，并从 `grid_centers[grid_id]` 读取抓取坐标。
 

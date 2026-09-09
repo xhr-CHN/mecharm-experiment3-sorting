@@ -3,7 +3,7 @@ sorting_task:
     frame_id: base
     detection_topic: /mecharm/detections
     vision_request_topic: /mecharm/vision_request
-    vision_timeout_sec: 8.0
+    vision_timeout_sec: 60.0
     fixed_grid_order: [G1, G2, G3, G4, G5, G6]
     carry_clearance: 0.108
     ring_center: [0.0, 0.0]
