@@ -97,8 +97,34 @@ def classify_grid_frames(
     return voted
 
 
+def classify_grid_batch(
+    model,
+    frames: Sequence,
+    grid_regions: Mapping[str, Sequence[float]],
+    grid_order: Sequence[str],
+    confidence_threshold: float,
+    image_size: int,
+    device: str,
+    minimum_votes: int = 4,
+) -> dict[str, dict | None]:
+    """Classify every configured fixed ROI over the same buffered frames."""
+    return {
+        str(grid_id): classify_grid_frames(
+            model,
+            frames,
+            grid_regions[str(grid_id)],
+            confidence_threshold,
+            image_size,
+            device,
+            minimum_votes,
+        )
+        for grid_id in grid_order
+    }
+
+
 def main(args=None) -> None:
     import json
+    from collections import deque
     from pathlib import Path
 
     import cv2
@@ -121,19 +147,27 @@ def main(args=None) -> None:
             self.declare_parameter("image_size", 640)
             self.declare_parameter("device", "cpu")
             self.declare_parameter("config_path", "")
+            self.declare_parameter("batch_frame_count", 6)
+            self.declare_parameter("batch_minimum_votes", 4)
             self.model_path = str(self.get_parameter("model_path").value)
             if not Path(self.model_path).is_file():
                 raise FileNotFoundError(f"YOLO model not found: {self.model_path}")
             self.confidence_threshold = float(self.get_parameter("confidence_threshold").value)
             self.image_size = int(self.get_parameter("image_size").value)
             self.device = str(self.get_parameter("device").value)
+            self.batch_frame_count = int(self.get_parameter("batch_frame_count").value)
+            self.batch_minimum_votes = int(self.get_parameter("batch_minimum_votes").value)
+            if self.batch_frame_count <= 0 or self.batch_minimum_votes <= 0:
+                raise ValueError("batch frame count and minimum votes must be positive")
             self.grid_regions = self._read_grid_regions()
+            self.grid_order = tuple(self.grid_regions)
             if self._configured_confidence is not None:
                 self.confidence_threshold = self._configured_confidence
             self.model = YOLO(self.model_path)
             self.bridge = CvBridge()
             self.latest_image = None
             self.latest_header = None
+            self.frame_buffer = deque(maxlen=self.batch_frame_count)
             self.image_sub = self.create_subscription(
                 Image,
                 str(self.get_parameter("image_topic").value),
@@ -174,6 +208,7 @@ def main(args=None) -> None:
         def _on_image(self, message: Image) -> None:
             self.latest_image = self.bridge.imgmsg_to_cv2(message, desired_encoding="bgr8")
             self.latest_header = message.header
+            self.frame_buffer.append((self.latest_image.copy(), message.header))
 
         def _publish_unknown(self, grid_id: str) -> None:
             self.get_logger().warning(
@@ -195,6 +230,9 @@ def main(args=None) -> None:
 
         def _on_request(self, request: String) -> None:
             grid_id = str(request.data).strip()
+            if grid_id.upper() == "ALL":
+                self._on_batch_request()
+                return
             if grid_id not in self.grid_regions or self.latest_image is None:
                 self._publish_unknown(grid_id)
                 return
@@ -245,6 +283,66 @@ def main(args=None) -> None:
                 result_message.hypothesis.score = best["confidence"]
                 detection.results.append(result_message)
             message.detections.append(detection)
+            self.publisher.publish(message)
+
+        def _on_batch_request(self) -> None:
+            if len(self.frame_buffer) < self.batch_frame_count:
+                self.get_logger().warning(
+                    f"YOLO BATCH UNKNOWN: need {self.batch_frame_count} frames, "
+                    f"have {len(self.frame_buffer)}"
+                )
+                self._publish_batch({grid_id: None for grid_id in self.grid_order})
+                return
+            frames = [frame for frame, _header in self.frame_buffer]
+            decisions = classify_grid_batch(
+                self.model,
+                frames,
+                self.grid_regions,
+                self.grid_order,
+                self.confidence_threshold,
+                self.image_size,
+                self.device,
+                self.batch_minimum_votes,
+            )
+            for grid_id, decision in decisions.items():
+                if decision is None:
+                    self.get_logger().warning(
+                        f"YOLO BATCH grid={grid_id} UNKNOWN "
+                        f"votes={self.batch_frame_count} "
+                        f"minimum={self.batch_minimum_votes}"
+                    )
+                else:
+                    self.get_logger().info(
+                        f"YOLO BATCH grid={grid_id} class={decision['class_id']} "
+                        f"votes={decision['vote_count']}/{self.batch_frame_count} "
+                        f"confidence={decision['confidence']:.3f}"
+                    )
+            self._publish_batch(decisions)
+
+        def _publish_batch(self, decisions: Mapping[str, dict | None]) -> None:
+            message = Detection2DArray()
+            if self.latest_header is not None:
+                message.header = self.latest_header
+            for grid_id in self.grid_order:
+                detection = Detection2D()
+                detection.id = grid_id
+                left, top, right, bottom = self.grid_regions[grid_id]
+                detection.bbox.center.position.x = (left + right) / 2.0
+                detection.bbox.center.position.y = (top + bottom) / 2.0
+                decision = decisions.get(grid_id)
+                result_message = ObjectHypothesisWithPose()
+                if decision is None:
+                    result_message.hypothesis.class_id = "unknown"
+                    result_message.hypothesis.score = 0.0
+                    detection.bbox.size_x = 1.0
+                    detection.bbox.size_y = 1.0
+                else:
+                    result_message.hypothesis.class_id = decision["class_id"]
+                    result_message.hypothesis.score = decision["confidence"]
+                    detection.bbox.size_x = max(1.0, right - left)
+                    detection.bbox.size_y = max(1.0, bottom - top)
+                detection.results.append(result_message)
+                message.detections.append(detection)
             self.publisher.publish(message)
 
     rclpy.init(args=args)

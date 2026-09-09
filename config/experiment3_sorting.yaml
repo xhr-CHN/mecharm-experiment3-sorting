@@ -106,3 +106,5 @@ yolo_classifier:
     confidence_threshold: 0.05
     image_size: 640
     device: cpu
+    batch_frame_count: 6
+    batch_minimum_votes: 4
