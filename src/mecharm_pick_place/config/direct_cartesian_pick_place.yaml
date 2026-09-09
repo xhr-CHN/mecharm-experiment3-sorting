@@ -1,0 +1,16 @@
+cartesian_direct_pick_place:
+  ros__parameters:
+    pick_xyz: [0.18, 0.09, 0.025]
+    place_xyz: [0.18, -0.08, 0.025]
+    pregrasp_clearance: 0.10
+    pick_close_clearance: 0.04
+    grasp_yaw_offset_deg: 90.0
+    urdf_path: /workspace/mecharm_exp2/simulation/urdf/mycobot_description/urdf/mecharm_270_pi/mecharm_270_pi_adaptive_gripper.urdf
+    position_tolerance: 0.008
+    vertical_axis_dot_min: 0.975
+    gripper_open: 0.15
+    gripper_closed: -0.75
+    gripper_speed_rad_s: 0.12
+    gripper_wait_before_sec: 1.0
+    gripper_wait_after_sec: 1.5
+    grasp_yaw_offset_deg: 90.0
