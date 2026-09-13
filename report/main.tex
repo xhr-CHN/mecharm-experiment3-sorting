@@ -256,6 +256,17 @@ python -m pytest <experiment3-root>/tests <experiment3-root>/src/mecharm_pick_pl
 \end{lstlisting}
 It returned 78 passed tests. Python compilation also passed for the modified Isaac and ROS 2 modules, and the Docker colcon build completed for both \texttt{mecharm\_pick\_place} and \texttt{mycobot\_description}.
 
+\subsection{GitHub Version-Control Evidence}
+
+The Experiment 3 source, configuration, model, USD scene, runtime evidence, and report materials are maintained in the public repository \url{https://github.com/xhr-CHN/mecharm-experiment3-sorting}. The commit history records the work in incremental stages rather than as one undifferentiated upload: documentation, runtime configuration, Isaac assets, ROS 2 code, validation tools, YOLO/runtime evidence, the G6 scene correction, and the individual report are all separately identifiable. Figure~\ref{fig:githubcommits} provides a direct screenshot of the repository's \texttt{main} branch commit page.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=.98\textwidth,keepaspectratio]{github_commit_history.png}
+\caption{GitHub commit history for the Experiment 3 repository, showing the incremental project records.}
+\label{fig:githubcommits}
+\end{figure}
+
 \section{Conclusion}
 
 I completed an independent Experiment 3 simulation package for automatic circular arrangement sorting with a mechArm 270 Pi. The final implementation combines a robot-centred ring scene, open deep bins, tennis-ball and green-pencil models, a calibrated tilted virtual camera, fixed-ROI YOLO classification, six-frame majority voting, fixed-world-coordinate manipulation, numerical IK, smooth motion, safe-stop handling, and final HOME return.
