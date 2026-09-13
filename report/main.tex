@@ -110,7 +110,8 @@ The system is divided into a Windows Isaac Sim process and a Dockerised ROS 2 pr
 \draw[arrow] (state) -- (target);
 \draw[arrow] (target) -- (motion);
 \draw[arrow] (motion) -- (bridge);
-\draw[arrow] (bridge) |- (scene);
+% Route the command feedback loop around the left edge, not through the scene node.
+\draw[arrow] (bridge.west) -- ++(-8mm,0) |- (scene.west);
 \end{tikzpicture}
 \caption{Data and control flow of the Experiment 3 simulation}
 \label{fig:architecture}
