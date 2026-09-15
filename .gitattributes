@@ -1,1 +1,4 @@
 *.mp4 filter=lfs diff=lfs merge=lfs -text
+report/presentation/**/*.pptx filter=lfs diff=lfs merge=lfs -text
+report/real_robot/source_materials/**/*.pptx filter=lfs diff=lfs merge=lfs -text
+results/experiment3/evidence/videos/*.mp4 filter=lfs diff=lfs merge=lfs -text

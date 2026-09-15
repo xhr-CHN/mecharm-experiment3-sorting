@@ -1,0 +1,7 @@
+id,x_forward_m,y_right_m,destination,description
+G1,0.55,-0.40,right,front-left
+G2,0.55,0.00,right,front-center
+G3,0.55,0.40,right,front-right
+G4,0.82,-0.40,left,rear-left
+G5,0.82,0.00,left,rear-center
+G6,0.82,0.40,left,rear-right

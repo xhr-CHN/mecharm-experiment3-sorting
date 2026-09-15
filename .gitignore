@@ -8,6 +8,7 @@ install/
 log/
 
 report/build/
+real_validation/
 simulation/scenes/*.usd
 simulation/scenes/*.usda
 simulation/scenes/*.usdc

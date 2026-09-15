@@ -1,0 +1,9 @@
+id,type,x_forward_m,y_right_m,size_m,description
+G1,pick_grid,0.55,-0.40,0.20,front-left priority 1
+G2,pick_grid,0.55,0.00,0.20,front-center priority 2
+G3,pick_grid,0.55,0.40,0.20,front-right priority 3
+G4,pick_grid,0.82,-0.40,0.20,rear-left priority 4 blocked by G1
+G5,pick_grid,0.82,0.00,0.20,rear-center priority 5 blocked by G2
+G6,pick_grid,0.82,0.40,0.20,rear-right priority 6 blocked by G3
+CUP_ZONE,classification_zone,0.00,-0.65,0.40,left tray center
+BOTTLE_ZONE,classification_zone,0.00,0.65,0.40,right tray center

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; width: 1600px; height: 760px; background: #ffffff; font-family: "Microsoft YaHei", Arial, sans-serif; }
+  .card { margin: 36px; height: 688px; border-radius: 18px; background: #102A43; color: #F5F8FA; padding: 42px 58px; box-shadow: 0 8px 24px rgba(16,42,67,.18); }
+  h1 { margin: 0 0 16px; font-size: 34px; color: #FFFFFF; }
+  .sub { margin-bottom: 30px; font-size: 22px; color: #9ED8FF; }
+  pre { margin: 0; font: 24px/1.55 "Cascadia Mono", Consolas, monospace; white-space: pre; }
+  .kw { color: #9ED8FF; } .fn { color: #FFD166; } .var { color: #F8C4FF; } .str { color: #A7F3D0; }
+  .note { margin-top: 30px; font-size: 21px; color: #D8E6F2; }
+  .source { margin-top: 30px; font: 18px "Cascadia Mono", Consolas, monospace; color: #8FA9BF; }
+</style>
+<div class="card">
+  <h1>问题二：使用固定 ROI 避免整图漏检铅笔</h1>
+  <div class="sub">Fixed ROI inference</div>
+  <pre><span class="var">crop</span>, <span class="var">offset_x</span>, <span class="var">offset_y</span> = <span class="fn">crop_fixed_roi</span>(
+    <span class="kw">self</span>.latest_image,
+    <span class="kw">self</span>.grid_regions[grid_id]
+)
+
+<span class="var">result</span> = <span class="kw">self</span>.model.<span class="fn">predict</span>(
+    source=<span class="var">crop</span>,
+    conf=<span class="kw">self</span>.confidence_threshold,
+    imgsz=<span class="kw">self</span>.image_size,
+    device=<span class="kw">self</span>.device
+)[0]</pre>
+  <div class="note">根据已知网格位置裁剪固定 ROI，再进行 YOLO 识别。</div>
+  <div class="source">Source: yolo_classifier_node.py</div>
+</div>
+</html>

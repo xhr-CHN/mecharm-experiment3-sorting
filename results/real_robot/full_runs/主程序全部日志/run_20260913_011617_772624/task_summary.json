@@ -1,0 +1,12 @@
+{
+  "finished_at": "2026-09-12T17:18:05.864890+00:00",
+  "execute": true,
+  "scans": 6,
+  "sorted_total": 0,
+  "sorted_by_class": {},
+  "failures_by_grid": {
+    "G1": 1,
+    "G2": 1
+  },
+  "stop_reason": "no_executable_target_or_dry_run"
+}

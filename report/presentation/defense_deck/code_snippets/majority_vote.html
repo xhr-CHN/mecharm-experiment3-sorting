@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; width: 1600px; height: 760px; background: #ffffff; font-family: "Microsoft YaHei", Arial, sans-serif; }
+  .card { margin: 36px; height: 688px; border-radius: 18px; background: #102A43; color: #F5F8FA; padding: 42px 58px; box-shadow: 0 8px 24px rgba(16,42,67,.18); }
+  h1 { margin: 0 0 16px; font-size: 34px; color: #FFFFFF; }
+  .sub { margin-bottom: 30px; font-size: 22px; color: #9ED8FF; }
+  pre { margin: 0; font: 24px/1.55 "Cascadia Mono", Consolas, monospace; white-space: pre; }
+  .kw { color: #9ED8FF; } .fn { color: #FFD166; } .var { color: #F8C4FF; } .danger { color: #FF9B9B; font-weight: bold; }
+  .note { margin-top: 30px; font-size: 21px; color: #D8E6F2; }
+  .source { margin-top: 30px; font: 18px "Cascadia Mono", Consolas, monospace; color: #8FA9BF; }
+</style>
+<div class="card">
+  <h1>问题三：G6 识别不稳定</h1>
+  <div class="sub">4-of-6 majority vote</div>
+  <pre><span class="var">highest</span> = <span class="fn">max</span>(counts.values())
+<span class="var">winners</span> = [
+    name <span class="kw">for</span> name, count <span class="kw">in</span> counts.items()
+    <span class="kw">if</span> count == <span class="var">highest</span>
+]
+
+<span class="danger">if highest &lt; minimum_votes or len(winners) != 1:</span>
+    <span class="danger">return None</span></pre>
+  <div class="note">少于 4/6 票或出现平票时，不强行判断，直接触发安全停止。</div>
+  <div class="source">Source: yolo_classifier_node.py</div>
+</div>
+</html>

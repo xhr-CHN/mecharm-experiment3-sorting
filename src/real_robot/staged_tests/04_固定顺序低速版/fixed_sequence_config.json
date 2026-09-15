@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "calibrated": true,
+  "calibration_source": "Copied from robomaster_sorter/sorter_config.json on 2026-09-13; fixed route only",
+  "robot": {
+    "conn_type": "ap",
+    "proto_type": "udp",
+    "sn": null,
+    "local_ip": null
+  },
+  "safety": {
+    "chassis_motion_enabled": true,
+    "max_step_m": 0.5,
+    "max_rotation_deg": 90.0,
+    "max_abs_arm_coordinate_mm": 500.0,
+    "startup_delay_s": 5.0,
+    "translation_speed_mps": 0.35,
+    "default_z_speed_dps": 20.0,
+    "action_timeout_s": 15.0,
+    "chassis_step_settle_s": 2.0,
+    "camera_home_settle_s": 0.8,
+    "gripper_open_power": 35,
+    "gripper_close_power": 45,
+    "gripper_open_seconds": 1.5,
+    "gripper_close_seconds": 1.5,
+    "post_close_pause_s": 0.4
+  },
+  "task": {
+    "fixed_sequence": [
+      {"grid_id": "G2", "destination": "left"},
+      {"grid_id": "G5", "destination": "right"},
+      {"grid_id": "G1", "destination": "right"},
+      {"grid_id": "G4", "destination": "right"},
+      {"grid_id": "G3", "destination": "right"},
+      {"grid_id": "G6", "destination": "right"}
+    ]
+  },
+  "pickup_profiles": {
+    "left": {
+      "arm_pregrasp_mm": [0, -60],
+      "arm_grasp_mm": [205, -60],
+      "arm_lift_mm": [180, 100]
+    },
+    "right": {
+      "arm_pregrasp_mm": [0, -15],
+      "arm_grasp_mm": [205, -15],
+      "arm_lift_mm": [180, 100]
+    }
+  },
+  "grids": [
+    {
+      "id": "G1",
+      "ground_center_m": {"x_forward_m": 0.55, "y_right_m": -0.4},
+      "chassis_to_pick": [{"y_m": -0.27}, {"x_m": 0.06}],
+      "chassis_home_from_pick": [{"x_m": -0.06}, {"y_m": 0.27}]
+    },
+    {
+      "id": "G2",
+      "ground_center_m": {"x_forward_m": 0.55, "y_right_m": 0.0},
+      "chassis_to_pick": [{"x_m": 0.06}],
+      "chassis_home_from_pick": [{"x_m": -0.06}]
+    },
+    {
+      "id": "G3",
+      "ground_center_m": {"x_forward_m": 0.55, "y_right_m": 0.4},
+      "chassis_to_pick": [{"y_m": 0.27}, {"x_m": 0.06}],
+      "chassis_home_from_pick": [{"x_m": -0.06}, {"y_m": -0.27}]
+    },
+    {
+      "id": "G4",
+      "ground_center_m": {"x_forward_m": 0.82, "y_right_m": -0.4},
+      "chassis_to_pick": [{"y_m": -0.27}, {"x_m": 0.48}],
+      "chassis_home_from_pick": [{"x_m": -0.48}, {"y_m": 0.27}]
+    },
+    {
+      "id": "G5",
+      "ground_center_m": {"x_forward_m": 0.82, "y_right_m": 0.0},
+      "chassis_to_pick": [{"x_m": 0.48}],
+      "chassis_home_from_pick": [{"x_m": -0.48}]
+    },
+    {
+      "id": "G6",
+      "ground_center_m": {"x_forward_m": 0.82, "y_right_m": 0.4},
+      "chassis_to_pick": [{"y_m": 0.27}, {"x_m": 0.48}],
+      "chassis_home_from_pick": [{"x_m": -0.48}, {"y_m": -0.27}]
+    }
+  ],
+  "destinations": {
+    "left": {
+      "chassis_to_destination": [{"z_deg": 90.0}],
+      "arm_predrop_mm": [180, 100],
+      "arm_drop_mm": [205, -15],
+      "arm_retract_mm": [150, 110],
+      "chassis_home_from_destination": [{"z_deg": -90.0}]
+    },
+    "right": {
+      "chassis_to_destination": [{"z_deg": -90.0}],
+      "arm_predrop_mm": [180, 100],
+      "arm_drop_mm": [205, -10],
+      "arm_retract_mm": [150, 110],
+      "chassis_home_from_destination": [{"z_deg": 90.0}]
+    }
+  }
+}

@@ -1,0 +1,195 @@
+{
+  "schema_version": 2,
+  "calibrated": true,
+  "arm_point_profile": {
+    "name": "class_specific_ground_v2",
+    "basis": "field adjustment: lower at x=0 before horizontal extension; cup pickup 45 mm lower in total; cup drop 5 mm lower",
+    "shared_by_classes": false,
+    "verified_on_this_robot": true
+  },
+  "robot": {
+    "conn_type": "ap",
+    "proto_type": "udp",
+    "sn": null,
+    "local_ip": null
+  },
+  "camera": {
+    "source": "robomaster",
+    "resolution": "720p",
+    "usb_index": 0,
+    "width": 1280,
+    "height": 720,
+    "warmup_frames": 3,
+    "scan_settle_s": 0.8
+  },
+  "model": {
+    "weights": "best.pt",
+    "expected_class_ids": {
+      "0": "cup",
+      "1": "mouse",
+      "2": "bottle"
+    },
+    "confidence": 0.45,
+    "iou": 0.7,
+    "imgsz": 800,
+    "device": "cpu",
+    "shape_guard": {
+      "enabled": true,
+      "cup_max_aspect_ratio": 1.75,
+      "bottle_min_aspect_ratio": 2.0
+    },
+    "scan_frames": 12,
+    "min_hit_frames": 5,
+    "min_vote_share": 0.7
+  },
+  "task": {
+    "target_classes": ["cup", "bottle"],
+    "max_objects": 6,
+    "max_failures_per_grid": 1,
+    "stop_after_no_candidate_scans": 2
+  },
+  "safety": {
+    "chassis_motion_enabled": true,
+    "max_step_m": 0.5,
+    "max_rotation_deg": 90.0,
+    "max_abs_arm_coordinate_mm": 500.0,
+    "startup_delay_s": 5.0,
+    "default_xy_speed_mps": 0.5,
+    "default_z_speed_dps": 30.0,
+    "action_timeout_s": 15.0,
+    "chassis_step_settle_s": 2.0,
+    "route_test_home_correction": {
+      "enabled": true,
+      "position_warmup_s": 0.6,
+      "tolerance_m": 0.015,
+      "gain": 0.6,
+      "max_step_m": 0.05,
+      "max_residual_m": 0.2,
+      "max_heading_residual_deg": 5.0,
+      "settle_s": 0.5
+    },
+    "gripper_open_power": 35,
+    "gripper_close_power": 45,
+    "gripper_open_seconds": 1.5,
+    "gripper_close_seconds": 1.5,
+    "gripper_status_timeout_s": 1.0,
+    "grasp_verification": {
+      "enabled": true,
+      "success_states": ["normal", "closed"]
+    }
+  },
+  "layout": {
+    "coordinate_frame": "robot_start_x_forward_y_right",
+    "grid_square_size_m": 0.2,
+    "nominal_arm_reach_m": 0.4,
+    "cup_zone_center_m": {"x_forward_m": 0.0, "y_right_m": -0.40},
+    "bottle_zone_center_m": {"x_forward_m": 0.0, "y_right_m": 0.40}
+  },
+  "grids": [
+    {
+      "id": "G1",
+      "priority": 1,
+      "row": "front",
+      "column": "left",
+      "ground_center_m": {"x_forward_m": 0.55, "y_right_m": -0.4},
+      "roi_norm": [0.03, 0.55, 0.3, 0.95],
+      "motion": {
+        "chassis_to_pick": [{"y_m": -0.27}, {"x_m": 0.06}],
+        "chassis_home_from_pick": [{"x_m": -0.06}, {"y_m": 0.27}]
+      }
+    },
+    {
+      "id": "G2",
+      "priority": 2,
+      "row": "front",
+      "column": "center",
+      "ground_center_m": {"x_forward_m": 0.55, "y_right_m": 0.0},
+      "roi_norm": [0.36, 0.55, 0.64, 0.95],
+      "motion": {
+        "chassis_to_pick": [{"x_m": 0.06}],
+        "chassis_home_from_pick": [{"x_m": -0.06}]
+      }
+    },
+    {
+      "id": "G3",
+      "priority": 3,
+      "row": "front",
+      "column": "right",
+      "ground_center_m": {"x_forward_m": 0.55, "y_right_m": 0.4},
+      "roi_norm": [0.7, 0.55, 0.97, 0.95],
+      "motion": {
+        "chassis_to_pick": [{"y_m": 0.27}, {"x_m": 0.06}],
+        "chassis_home_from_pick": [{"x_m": -0.06}, {"y_m": -0.27}]
+      }
+    },
+    {
+      "id": "G4",
+      "priority": 4,
+      "row": "rear",
+      "column": "left",
+      "blocked_by": "G1",
+      "ground_center_m": {"x_forward_m": 0.82, "y_right_m": -0.4},
+      "roi_norm": [0.18, 0.15, 0.38, 0.50],
+      "motion": {
+        "chassis_to_pick": [{"y_m": -0.27}, {"x_m": 0.48}],
+        "chassis_home_from_pick": [{"x_m": -0.48}, {"y_m": 0.27}]
+      }
+    },
+    {
+      "id": "G5",
+      "priority": 5,
+      "row": "rear",
+      "column": "center",
+      "blocked_by": "G2",
+      "ground_center_m": {"x_forward_m": 0.82, "y_right_m": 0.0},
+      "roi_norm": [0.41, 0.15, 0.59, 0.50],
+      "motion": {
+        "chassis_to_pick": [{"x_m": 0.48}],
+        "chassis_home_from_pick": [{"x_m": -0.48}]
+      }
+    },
+    {
+      "id": "G6",
+      "priority": 6,
+      "row": "rear",
+      "column": "right",
+      "blocked_by": "G3",
+      "ground_center_m": {"x_forward_m": 0.82, "y_right_m": 0.4},
+      "roi_norm": [0.62, 0.15, 0.82, 0.50],
+      "motion": {
+        "chassis_to_pick": [{"y_m": 0.27}, {"x_m": 0.48}],
+        "chassis_home_from_pick": [{"x_m": -0.48}, {"y_m": -0.27}]
+      }
+    }
+  ],
+  "arm_profiles": {
+    "cup": {
+      "arm_pregrasp_mm": [0, -60],
+      "arm_grasp_mm": [205, -60],
+      "arm_lift_mm": [180, 100]
+    },
+    "bottle": {
+      "arm_pregrasp_mm": [0, -15],
+      "arm_grasp_mm": [205, -15],
+      "arm_lift_mm": [180, 100]
+    }
+  },
+  "bins": {
+    "cup": {
+      "description": "Turn left 90 degrees in place and place into the left classification tray",
+      "chassis_to_bin": [{"z_deg": 90.0}],
+      "arm_predrop_mm": [180, 100],
+      "arm_drop_mm": [205, -15],
+      "arm_retract_mm": [150, 110],
+      "chassis_home_from_bin": [{"z_deg": -90.0}]
+    },
+    "bottle": {
+      "description": "Turn right 90 degrees in place and place into the right classification tray",
+      "chassis_to_bin": [{"z_deg": -90.0}],
+      "arm_predrop_mm": [180, 100],
+      "arm_drop_mm": [205, -10],
+      "arm_retract_mm": [150, 110],
+      "chassis_home_from_bin": [{"z_deg": 90.0}]
+    }
+  }
+}

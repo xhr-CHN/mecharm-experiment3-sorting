@@ -1,0 +1,12 @@
+{
+  "finished_at": "2026-09-12T16:48:08.719799+00:00",
+  "execute": true,
+  "scans": 4,
+  "sorted_total": 2,
+  "sorted_by_class": {
+    "cup": 1,
+    "bottle": 1
+  },
+  "failures_by_grid": {},
+  "stop_reason": "max_objects"
+}

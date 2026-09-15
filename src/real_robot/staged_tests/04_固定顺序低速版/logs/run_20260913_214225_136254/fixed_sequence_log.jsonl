@@ -1,0 +1,4 @@
+{"timestamp": "2026-09-13T13:42:33.166951+00:00", "event": "fixed_sequence_started", "fixed_sequence": [{"grid_id": "G2", "destination": "left"}, {"grid_id": "G5", "destination": "right"}, {"grid_id": "G1", "destination": "right"}, {"grid_id": "G4", "destination": "right"}, {"grid_id": "G3", "destination": "right"}, {"grid_id": "G6", "destination": "right"}], "translation_speed_mps": 0.35}
+{"timestamp": "2026-09-13T13:42:33.169826+00:00", "event": "sequence_step", "index": 1, "total": 6}
+{"timestamp": "2026-09-13T13:42:33.169826+00:00", "event": "position_started", "grid_id": "G2", "destination": "left", "ground_center_m": {"x_forward_m": 0.55, "y_right_m": 0.0}}
+{"timestamp": "2026-09-13T13:42:36.530229+00:00", "event": "fixed_sequence_exception", "error": "MotionError('route to G2 step 1 low-speed translation was rejected')"}

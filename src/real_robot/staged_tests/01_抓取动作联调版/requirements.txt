@@ -1,0 +1,3 @@
+# Install a Jetson/JetPack-compatible CUDA PyTorch build before these packages.
+ultralytics
+robomaster

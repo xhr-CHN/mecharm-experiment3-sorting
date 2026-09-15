@@ -1,0 +1,1 @@
+{"timestamp": "2026-09-08T04:03:12.320262+00:00", "event": "grasp_only_test_exception", "error": "UnboundLocalError(\"local variable 'proxy_addr' referenced before assignment\")"}
